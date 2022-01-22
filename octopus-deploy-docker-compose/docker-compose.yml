@@ -14,6 +14,8 @@ services:
       test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "select 1"]
       interval: 10s
       retries: 10
+    volumes:
+      - sqlvolume:/var/opt/mssql
    octopus-server:
     image: octopusdeploy/octopusdeploy:${OCTOPUS_SERVER_TAG}
     restart: always
@@ -32,3 +34,16 @@ services:
       - 80:8080
     depends_on:
       - db
+    volumes:
+      - repository:/repository
+      - artifacts:/artifacts
+      - taskLogs:/taskLogs
+      - cache:/cache
+      - import:/import
+volumes:
+  repository:
+  artifacts:
+  taskLogs:
+  cache:
+  import:
+  sqlvolume:
